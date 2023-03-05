@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { log, select } from "@clack/prompts";
 import * as typescript from "./cmd/typescript";
 

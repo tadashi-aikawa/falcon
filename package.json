@@ -1,7 +1,13 @@
 {
+  "name": "falcon",
+  "version": "0.1.0",
   "main": "lib/index.js",
+  "bin": {
+    "falcon": "lib/index.js"
+  },
   "files": [
-    "lib"
+    "lib",
+    "template"
   ],
   "scripts": {
     "dev": "tsc && node lib/index.js",
