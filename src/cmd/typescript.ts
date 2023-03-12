@@ -15,7 +15,7 @@ const BASE_PATH = path.join(os.homedir(), "tmp", "sandbox");
 const FALCON_TEMPLATE_ROOT = path.join(__dirname, "..", "..", "template");
 
 export async function exec() {
-  await intro(`Let's create a TypeScript project!`);
+  intro(`Let's create a TypeScript project!`);
 
   const projectName = await text({ message: "Project name?" });
   const projectType = (await select({
@@ -41,9 +41,9 @@ export async function exec() {
   await loading(`Install tsconfig`, `npm i -D @tsconfig/${projectType}`);
   await run("npm list");
 
-  await log.info("Build and run");
+  log.info("Build and run");
   await run("npm run dev");
 
   log.success("Success!");
-  await outro(`cd ${projectRoot}`);
+  outro(`cd ${projectRoot}`);
 }
