@@ -20,14 +20,29 @@ export async function exec() {
   const projectName = await text({ message: "Project name?" });
   const projectType = (await select({
     message: "Project type?",
-    options: [{ value: "node18", label: "node18", hint: "recommended" }],
-  })) satisfies "node18" | symbol;
+    options: [
+      { value: "node18", label: "Node 18" },
+      { value: "vue-vite", label: "Vue + Vite" },
+    ],
+  })) satisfies "node18" | "vue-vite" | symbol;
 
   if (isCancel(projectName) || isCancel(projectType)) {
     cancel("Operation cancelled.");
     process.exit(0);
   }
 
+  switch (projectType) {
+    case "node18":
+      await createNode18(projectName);
+      break;
+    case "vue-vite":
+      await createVueVite(projectName);
+      break;
+  }
+}
+
+async function createNode18(projectName: string) {
+  const projectType = "node18";
   const projectRoot = path.join(BASE_PATH, "typescript", projectName);
   const templateRoot = path.join(FALCON_TEMPLATE_ROOT, "typescript");
 
@@ -46,4 +61,21 @@ export async function exec() {
 
   log.success("Success!");
   outro(`cd ${projectRoot}`);
+}
+
+async function createVueVite(projectName: string) {
+  const projectRoot = path.join(BASE_PATH, "typescript", projectName);
+  const projectParentRoot = path.join(BASE_PATH, "typescript");
+
+  await cd(projectParentRoot);
+  await run(`npm create vite@latest -y ${projectName} -- --template vue-ts`);
+
+  await cd(projectRoot);
+  await loading(`Install dependencies`, "npm i");
+  await loading(`Install prettier`, "npm i -D prettier");
+  await run("npm list");
+
+  log.success("Success!");
+  outro(`cd ${projectRoot}
+npm run dev`);
 }
