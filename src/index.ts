@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { log, select } from "@clack/prompts";
 import * as typescript from "./cmd/typescript";
+import * as python from "./cmd/python";
 
 type CommandFunction = () => Promise<void>;
 
@@ -9,6 +10,7 @@ async function main() {
     message: "Select a language",
     options: [
       { value: "TypeScript", label: "TypeScript" },
+      { value: "Python", label: "Python" },
       { value: "Coming soon...", label: "Coming soon..." },
     ],
   });
@@ -17,6 +19,9 @@ async function main() {
     switch (command) {
       case "TypeScript":
         await typescript.exec();
+        break;
+      case "Python":
+        await python.exec();
         break;
       default:
         console.log("Do nothing...");
