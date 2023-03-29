@@ -43,7 +43,7 @@ async function createPython3Latest(projectName: string) {
   const templateRoot = path.join(FALCON_TEMPLATE_ROOT, "python");
 
   await cp(templateRoot, projectRoot);
-  await cd(projectRoot);
+  await cd(projectRoot, { createDirectoryIfNotExists: true });
   await loading(`Create virtual environment`, "python3 -m venv .venv");
 
   log.info("Run");

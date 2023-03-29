@@ -17,9 +17,14 @@ export async function mkdir(
 
 export async function cd(
   path: string,
-  option?: { hideLog?: boolean }
+  option?: { hideLog?: boolean; createDirectoryIfNotExists?: boolean }
 ): Promise<void> {
-  await process.chdir(path);
+  if (option?.createDirectoryIfNotExists && !fs.existsSync(path)) {
+    log.info(`${path} doesn't exist`);
+    await mkdir(path);
+  }
+
+  process.chdir(path);
   if (!option?.hideLog) {
     log.success(`Change directory: "${path}"`);
   }

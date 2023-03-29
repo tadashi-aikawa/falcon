@@ -67,10 +67,10 @@ async function createVueVite(projectName: string) {
   const projectRoot = path.join(BASE_PATH, "typescript", projectName);
   const projectParentRoot = path.join(BASE_PATH, "typescript");
 
-  await cd(projectParentRoot);
+  await cd(projectParentRoot, { createDirectoryIfNotExists: true });
   await run(`npm create vite@latest -y ${projectName} -- --template vue-ts`);
 
-  await cd(projectRoot);
+  await cd(projectRoot, { createDirectoryIfNotExists: true });
   await loading(`Install dependencies`, "npm i");
   await loading(`Install prettier`, "npm i -D prettier");
   await run("npm list");
