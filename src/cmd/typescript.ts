@@ -22,9 +22,10 @@ export async function exec() {
     message: "Project type?",
     options: [
       { value: "node18", label: "Node 18" },
+      { value: "node16", label: "Node 16" },
       { value: "vue-vite", label: "Vue + Vite" },
     ],
-  })) satisfies "node18" | "vue-vite" | symbol;
+  })) satisfies "node18" | "node16" | "vue-vite" | symbol;
 
   if (isCancel(projectName) || isCancel(projectType)) {
     cancel("Operation cancelled.");
@@ -33,7 +34,10 @@ export async function exec() {
 
   switch (projectType) {
     case "node18":
-      await createNode18(projectName);
+      await createNode("node18", projectName);
+      break;
+    case "node16":
+      await createNode("node16", projectName);
       break;
     case "vue-vite":
       await createVueVite(projectName);
@@ -41,8 +45,7 @@ export async function exec() {
   }
 }
 
-async function createNode18(projectName: string) {
-  const projectType = "node18";
+async function createNode(projectType: string, projectName: string) {
   const projectRoot = path.join(BASE_PATH, "typescript", projectName);
   const templateRoot = path.join(FALCON_TEMPLATE_ROOT, "typescript");
 
