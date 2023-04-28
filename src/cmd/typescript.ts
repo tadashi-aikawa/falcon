@@ -21,11 +21,12 @@ export async function exec() {
   const projectType = (await select({
     message: "Project type?",
     options: [
+      { value: "node20", label: "Node 20" },
       { value: "node18", label: "Node 18" },
       { value: "node16", label: "Node 16" },
       { value: "vue-vite", label: "Vue + Vite" },
     ],
-  })) satisfies "node18" | "node16" | "vue-vite" | symbol;
+  })) satisfies "node20" | "node18" | "node16" | "vue-vite" | symbol;
 
   if (isCancel(projectName) || isCancel(projectType)) {
     cancel("Operation cancelled.");
@@ -33,6 +34,9 @@ export async function exec() {
   }
 
   switch (projectType) {
+    case "node20":
+      await createNode("node20", projectName);
+      break;
     case "node18":
       await createNode("node18", projectName);
       break;
