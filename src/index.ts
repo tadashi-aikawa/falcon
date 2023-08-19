@@ -2,6 +2,7 @@
 import { log, select } from "@clack/prompts";
 import * as typescript from "./cmd/typescript";
 import * as python from "./cmd/python";
+import * as go from "./cmd/go";
 
 type CommandFunction = () => Promise<void>;
 
@@ -11,6 +12,7 @@ async function main() {
     options: [
       { value: "TypeScript", label: "TypeScript" },
       { value: "Python", label: "Python" },
+      { value: "Go", label: "Go" },
       { value: "Coming soon...", label: "Coming soon..." },
     ],
   });
@@ -22,6 +24,9 @@ async function main() {
         break;
       case "Python":
         await python.exec();
+        break;
+      case "Go":
+        await go.exec();
         break;
       default:
         console.log("Do nothing...");
