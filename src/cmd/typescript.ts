@@ -35,13 +35,13 @@ export async function exec() {
 
   switch (projectType) {
     case "node20":
-      await createNode("node20", projectName);
+      await createNode("20", projectName);
       break;
     case "node18":
-      await createNode("node18", projectName);
+      await createNode("18", projectName);
       break;
     case "node16":
-      await createNode("node16", projectName);
+      await createNode("16", projectName);
       break;
     case "vue-vite":
       await createVueVite(projectName);
@@ -49,7 +49,8 @@ export async function exec() {
   }
 }
 
-async function createNode(projectType: string, projectName: string) {
+async function createNode(nodeVersion: string, projectName: string) {
+  const projectType = `node${nodeVersion}`
   const projectRoot = path.join(BASE_PATH, "typescript", projectName);
   const templateRoot = path.join(FALCON_TEMPLATE_ROOT, "typescript");
 
@@ -62,6 +63,9 @@ async function createNode(projectType: string, projectName: string) {
   await loading(`Install typescript, prettier`, "npm i -D typescript prettier");
   await loading(`Install tsconfig`, `npm i -D @tsconfig/${projectType}`);
   await run("npm list");
+
+  log.info("Pin node version");
+  await run(`volta pin node@${nodeVersion}`);
 
   log.info("Build and run");
   await run("npm run dev");
